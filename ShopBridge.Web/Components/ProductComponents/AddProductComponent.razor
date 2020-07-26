@@ -1,0 +1,78 @@
+﻿@using ShopBridge.Model
+@inject IToastService toastService
+@inherits Microsoft.AspNetCore.Components.OwningComponentBase<ShopBridge.Service.Services.ProductService>
+   
+<div class="">
+    <h5>Add Product</h5>
+    <form>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Product Name:<span class="text-danger"> *</span></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" placeholder="Enter product name" @bind="@Product.Name">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Product Description:<span class="text-danger"> *</span></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" placeholder="Enter product description" @bind="@Product.Description">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Product Price:<span class="text-danger"> *</span></label>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" placeholder="Enter product price" @bind="@Product.Price">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-primary" @onclick="@AddProduct">Add Product</button>
+            </div>
+        </div>
+       
+    </form>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<bool> GetAllProducts { get; set; }
+
+    public ShopBridge.Model.Product Product = new Product();
+
+    public async Task AddProduct()
+    {
+        if (string.IsNullOrEmpty(Product.Name))
+        {
+            toastService.ShowWarning("Please enter product name");
+            return;
+        }
+        else if (string.IsNullOrEmpty(Product.Description))
+        {
+            toastService.ShowWarning("Please enter product description");
+            return;
+        }
+        else if (Product.Price == 0)
+        {
+            toastService.ShowWarning("Product price should not be zero");
+            return;
+        }
+        else
+        {
+            var result = await Service.AddAsync(Product);
+            toastService.ShowSuccess("Product added successfully");
+            Product = new Product();
+            await GetAllProducts.InvokeAsync(true);
+        }
+    }
+}

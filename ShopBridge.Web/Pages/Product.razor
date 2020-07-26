@@ -1,0 +1,51 @@
+﻿@page "/product/{ProductId:int}"
+@using ShopBridge.Model
+@inject NavigationManager NavigationManager
+@inherits Microsoft.AspNetCore.Components.OwningComponentBase<ShopBridge.Service.Services.ProductService>
+
+<div class="content">
+    <div class="container text-center">
+        <h3>@product.Name</h3>
+        <div class="row">          
+            <div class="col-md-12 text-center">
+                <table class="table text-center">
+                    <tbody>
+                        <tr>
+                            <td>Product Name:</td>
+                            <td>@product.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Product Description:</td>
+                            <td>@product.Description</td>
+                        </tr>
+                        <tr>
+                            <td>Product Price:</td>
+                            <td><span>₹</span>@product.Price<span>/-</span></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button class="btn btn-dark" @onclick="GoBack">Back</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int ProductId { get; set; }
+
+    ShopBridge.Model.Product product = new ShopBridge.Model.Product();
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await Service.GetAsync(ProductId);
+    }
+
+    public void GoBack()
+    {
+        NavigationManager.NavigateTo("/index");
+    }
+}

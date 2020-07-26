@@ -1,0 +1,71 @@
+﻿@page "/index"
+@using ShopBridge.Model
+@inherits Microsoft.AspNetCore.Components.OwningComponentBase<ShopBridge.Service.Services.ProductService>
+@using ShopBridge.Web.Components.ProductComponents
+@inject NavigationManager NavigationManager
+@inject IToastService toastService
+
+<div class="content">
+    <div class="container text-center">
+        <h2 class="text-uppercase ">Shop Bridge</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <AddProductComponent GetAllProducts="@GetAllProducts"></AddProductComponent>
+            </div>
+
+            <div class="col-md-12 mt-5">
+                <h5>Product List</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Product Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ProductList != null)
+                        {
+                            @foreach (var product in ProductList)
+                            {
+                                <tr style="cursor:pointer" @onclick="@(async () => GetProduct(product.Id))">
+                                    <td>@product.Name</td>
+                                    <td><span>₹</span>@product.Price<span>/-</span></td>
+                                    <td><button type="button" class="btn btn-danger" @onclick="@(async () => await DeleteProduct(product.Id))" @onclick:stopPropagation="true">Remove</button></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    public IEnumerable<ShopBridge.Model.Product> ProductList { get; set; }
+    public bool IsProductAdded { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAllProducts();
+    }
+
+    public async Task GetAllProducts()
+    {
+        ProductList = await Service.GetAllAsync();
+    }
+
+    public void GetProduct(int id)
+    {
+        NavigationManager.NavigateTo("/product/" + id);
+    }
+
+    public async Task DeleteProduct(int id)
+    {
+        await Service.DeleteAsync(id);
+        toastService.ShowSuccess("Product removed successfully");
+        await GetAllProducts();
+    }
+}

@@ -1,0 +1,12 @@
+﻿
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <h2>Welcome to SHOP BRIDGE</h2>
+            <p>Please click on Product from side bar to get products </p>
+        </LayoutView>
+    </NotFound>
+</Router>
