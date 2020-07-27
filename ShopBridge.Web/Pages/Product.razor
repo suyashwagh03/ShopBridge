@@ -11,23 +11,22 @@
                 <table class="table text-center">
                     <tbody>
                         <tr>
-                            <td>Product Name:</td>
+                            <td>Product Name :</td>
                             <td>@product.Name</td>
                         </tr>
                         <tr>
-                            <td>Product Description:</td>
+                            <td>Product Description :</td>
                             <td>@product.Description</td>
                         </tr>
                         <tr>
-                            <td>Product Price:</td>
+                            <td>Product Price :</td>
                             <td><span>₹</span>@product.Price<span>/-</span></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><button class="btn btn-dark" @onclick="GoBack">Back</button></td>
-                        </tr>
+                        </tr>                       
                     </tbody>
                 </table>
+                <div class="col-md-12 text-center">
+                   <button class="btn btn-dark" @onclick="GoBack">Back</button>
+                </div>
             </div>
         </div>
     </div>
