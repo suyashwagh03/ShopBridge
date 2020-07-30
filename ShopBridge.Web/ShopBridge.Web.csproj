@@ -13,4 +13,8 @@
     <ProjectReference Include="..\ShopBridge.Service\ShopBridge.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Project_Screenshots\" />
+  </ItemGroup>
+
 </Project>
